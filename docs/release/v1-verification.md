@@ -4,10 +4,12 @@ Date: 2026-08-17
 
 ## Decision
 
-The version-one artifact chain passes the complete Release Gate on the local
-Linux verification host. The candidate is ready for release only when the same
-commit is green in all three required GitHub Actions matrix jobs; this report
-does not publish, tag, or otherwise create a release.
+The version-one artifact chain passes the complete Release Gate locally and on
+all three required GitHub Actions platforms. Candidate commit
+`e4fc6e930a51033c964cfbe8e3da71cf2af02b4e` is green on Linux, Windows, and
+macOS in [workflow run 32018267396](https://github.com/S-F-Wang/System-engineering-based-on-agent-harness/actions/runs/32018267396).
+Version one is release-ready. This report does not publish, tag, or otherwise
+create a release.
 
 The authoritative chain is:
 
@@ -44,7 +46,7 @@ The complete gate returned all nine Chapters with
 Observed local results:
 
 - Release tooling: 5 passed.
-- Root course suite: 33 passed.
+- Root course suite: 36 passed.
 - Final cumulative Checkpoint suite: 146 passed, 1 credential-gated smoke
   skipped.
 - Mypy: no issues in 18 source files.
@@ -54,15 +56,16 @@ Observed local results:
 
 | Platform | Python | Result for this candidate | Source of truth |
 | --- | --- | --- | --- |
-| Linux | 3.11.15 | Pass locally | Commands above |
-| Windows | 3.11 | Required on push | `offline-release-gate` matrix job |
-| macOS | 3.11 | Required on push | `offline-release-gate` matrix job |
+| Linux | 3.11 | Pass | Workflow run 32018267396; 3m04s |
+| Windows | 3.11 | Pass | Workflow run 32018267396; 5m03s |
+| macOS | 3.11 | Pass | Workflow run 32018267396; 14m20s |
 
 The workflow first materializes `uv.lock`, then sets `UV_OFFLINE=1`,
 `PIP_NO_INDEX=1`, disables the real smoke opt-in, and runs the same release
-command on `ubuntu-latest`, `windows-latest`, and `macos-latest`. A Windows or
-macOS job that is absent, skipped, or red means the candidate is not
-releasable; this local report does not claim an unobserved remote result.
+command on `ubuntu-latest`, `windows-latest`, and `macos-latest`. Every matrix
+job ran the release-tool tests, complete offline Release Gate, platform type
+check, and offline distribution build/install successfully. No platform result
+was inferred from the local host.
 
 ## Release evidence
 
