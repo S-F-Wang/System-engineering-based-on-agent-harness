@@ -5,7 +5,12 @@ from pathlib import Path
 
 import pytest
 
-from course.tools.checkpoint import CheckpointVerificationError, export_checkpoint
+from course.tools.checkpoint import (
+    CheckpointVerificationError,
+    export_checkpoint,
+    export_production_package,
+    production_drift,
+)
 
 
 def _write_notebook(
@@ -326,3 +331,28 @@ where = ["src"]
 
     assert captured.value.gate == "tests"
     assert existing.read_bytes() == b"previous checkpoint\n"
+
+
+def test_production_package_is_generated_only_from_the_final_checkpoint(
+    tmp_path: Path,
+) -> None:
+    checkpoint = tmp_path / "course" / "checkpoints" / "ch09"
+    package = checkpoint / "src" / "agent_harness"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text('VERSION = "1"\n')
+    (package / "runtime.py").write_text("READY = True\n")
+    repository = tmp_path / "repository"
+
+    files = export_production_package(checkpoint, repository)
+
+    assert files == (
+        "src/agent_harness/__init__.py",
+        "src/agent_harness/runtime.py",
+    )
+    assert production_drift(checkpoint, repository) == ()
+    (repository / "src" / "agent_harness" / "runtime.py").write_text(
+        "READY = False\n"
+    )
+    assert production_drift(checkpoint, repository) == (
+        "src/agent_harness/runtime.py",
+    )

@@ -7,19 +7,22 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "agent-harness-course-tooling"
-version = "0.1.0"
-source = { virtual = "." }
+name = "agent-harness"
+version = "1.0.0"
+source = { editable = "." }
 dependencies = [
     { name = "jsonschema" },
-    { name = "nbclient" },
-    { name = "nbformat" },
     { name = "openai" },
+    { name = "platformdirs" },
 ]
 
 [package.dev-dependencies]
-dev = [
+course = [
     { name = "ipykernel" },
+    { name = "nbclient" },
+    { name = "nbformat" },
+]
+dev = [
     { name = "mypy" },
     { name = "pip" },
     { name = "pytest" },
@@ -30,14 +33,17 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", specifier = ">=4.23,<5" },
-    { name = "nbclient", specifier = ">=0.10,<0.11" },
-    { name = "nbformat", specifier = ">=5.10,<6" },
     { name = "openai", specifier = ">=1.40,<3" },
+    { name = "platformdirs", specifier = ">=4.2,<5" },
 ]
 
 [package.metadata.requires-dev]
-dev = [
+course = [
     { name = "ipykernel", specifier = ">=6.29,<8" },
+    { name = "nbclient", specifier = ">=0.10,<0.11" },
+    { name = "nbformat", specifier = ">=5.10,<6" },
+]
+dev = [
     { name = "mypy", specifier = ">=1.11,<2" },
     { name = "pip", specifier = ">=24" },
     { name = "pytest", specifier = ">=8.2,<9" },

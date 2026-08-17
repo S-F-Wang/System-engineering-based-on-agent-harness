@@ -447,3 +447,88 @@ def checkpoint_drift(
             ).read_bytes():
                 drift.add(relative)
     return tuple(sorted(drift))
+
+
+def _production_files(root: Path) -> tuple[str, ...]:
+    package = root / "src" / "agent_harness"
+    if not package.is_dir():
+        return ()
+    return tuple(
+        sorted(
+            path.relative_to(root).as_posix()
+            for path in package.rglob("*")
+            if path.is_file()
+            and "__pycache__" not in path.parts
+            and path.suffix != ".pyc"
+        )
+    )
+
+
+def export_production_package(
+    checkpoint: str | Path,
+    repository: str | Path,
+) -> tuple[str, ...]:
+    """Atomically generate ``src/agent_harness`` only from a final Checkpoint."""
+
+    checkpoint_path = Path(checkpoint).resolve()
+    source = checkpoint_path / "src" / "agent_harness"
+    if not source.is_dir() or not (source / "__init__.py").is_file():
+        raise ValueError("final Checkpoint has no importable agent_harness package")
+    repository_path = Path(repository).resolve()
+    source_root = repository_path / "src"
+    source_root.mkdir(parents=True, exist_ok=True)
+    target = source_root / "agent_harness"
+    with tempfile.TemporaryDirectory(
+        prefix=".agent-harness-production-", dir=source_root
+    ) as temporary:
+        staging = Path(temporary) / "agent_harness"
+        shutil.copytree(
+            source,
+            staging,
+            ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
+        )
+        _publish(staging, target)
+    return _production_files(repository_path)
+
+
+def production_drift(
+    checkpoint: str | Path,
+    repository: str | Path,
+) -> tuple[str, ...]:
+    """Return production paths that differ from ``Checkpoint/src``."""
+
+    checkpoint_path = Path(checkpoint).resolve()
+    repository_path = Path(repository).resolve()
+    expected_root = checkpoint_path / "src" / "agent_harness"
+    if not expected_root.is_dir():
+        raise ValueError("final Checkpoint has no agent_harness package")
+    actual_root = repository_path / "src" / "agent_harness"
+    expected = {
+        path.relative_to(expected_root).as_posix(): path
+        for path in expected_root.rglob("*")
+        if path.is_file()
+        and "__pycache__" not in path.parts
+        and path.suffix != ".pyc"
+    }
+    actual = (
+        {
+            path.relative_to(actual_root).as_posix(): path
+            for path in actual_root.rglob("*")
+            if path.is_file()
+            and "__pycache__" not in path.parts
+            and path.suffix != ".pyc"
+        }
+        if actual_root.is_dir()
+        else {}
+    )
+    drift = []
+    for relative in sorted(expected.keys() | actual.keys()):
+        expected_path = expected.get(relative)
+        actual_path = actual.get(relative)
+        if (
+            expected_path is None
+            or actual_path is None
+            or expected_path.read_bytes() != actual_path.read_bytes()
+        ):
+            drift.append(f"src/agent_harness/{relative}")
+    return tuple(drift)
