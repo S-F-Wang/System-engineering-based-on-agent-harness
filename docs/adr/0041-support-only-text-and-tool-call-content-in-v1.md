@@ -1,0 +1,3 @@
+# Support only text and Tool Call content in version one
+
+Version one will implement provider-neutral TextContent and ToolCallContent blocks end to end. User, assistant, and ToolResult messages may carry text, assistant messages may request Tools, and streaming exposes text and Tool Call argument deltas. Tool results remain distinct messages rather than assistant text, and malformed or unknown Tool Calls settle into diagnosable outcomes. Images, audio, video, file inputs, provider-specific reasoning blocks, and nonstandard OpenAI-compatible content variants are out of scope. Message content is nevertheless a discriminated and versioned union rather than a raw string, allowing later Content Block types to be added without redesigning AgentRuntime or Session persistence.

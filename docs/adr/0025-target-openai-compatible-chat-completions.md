@@ -1,0 +1,3 @@
+# Target OpenAI-compatible Chat Completions
+
+Version one will implement one production provider boundary: OpenAICompatibleAdapter over the streaming `/v1/chat/completions` protocol using `openai.AsyncOpenAI`. Its explicit configuration supports model, base URL, API key, request headers, and a constrained `extra_body`; the adapter translates text, tool calls, usage, stop reasons, and failures into provider-neutral harness contracts. Responses, Assistants, and Realtime APIs are out of scope. Provider wire types and compatibility accommodations may not leak into AgentRuntime. A future protocol is added as another ModelAdapter rather than as conditional behavior throughout the harness.

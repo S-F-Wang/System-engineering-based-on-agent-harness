@@ -1,0 +1,3 @@
+# Standardize the executable Chapter Notebook structure
+
+Every Chapter Notebook will follow the same Chapter Template: state the chapter goal and the limitation of the preceding Checkpoint; explain the core concept and execution flow; run a minimal example; construct the Chapter Increment in stages; expose an execution trace; examine failure cases, boundaries, and design trade-offs; export and verify the Checkpoint; and summarize its public API. Chapters contain no exercises, TODOs, or solution sections. Their cells execute in narrative order, introduce no unexplained later abstractions, and must pass `Restart Kernel -> Run All`. Teaching and production paths use the same exported implementation so the course cannot silently diverge from the Reusable Harness.

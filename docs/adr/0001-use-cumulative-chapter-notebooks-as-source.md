@@ -1,0 +1,3 @@
+# Use cumulative Chapter Notebooks as the harness source
+
+The course must explain the harness from first principles while producing one reusable implementation without a separately maintained production codebase. Chapter Notebooks are therefore the authoritative literate source: each chapter constructs one Chapter Increment from the preceding Checkpoint, exports a new cumulative Checkpoint, and the completed checkpoint chain produces the Reusable Harness. Generated Python artifacts are not edited independently, trading a more demanding export and validation pipeline for freedom from drift between the course and infrastructure.

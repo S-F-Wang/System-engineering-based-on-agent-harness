@@ -1,0 +1,40 @@
+{
+  "digest": "bc5793cea6c472dd9cdb476c1f88fdf669860dddc2804c6e17978abae4067b26",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "da5ec71bde14907d7b20ef15cdff62488dc9f016893570b40c91ee4bfb5e2bb9"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "3d8290d60e4d32bd564b7b7343e99fe4bee229cd0e30b2878780a5406a1417ac"
+    },
+    {
+      "path": "src/agent_harness/__init__.py",
+      "sha256": "7447cb5d6612f1a7b4219be600b91a5e00359a7af4d406f8c9ffa1006e63249e"
+    },
+    {
+      "path": "src/agent_harness/model.py",
+      "sha256": "303179bb97562f7559033fa1af6cea0cb059989271d9a0b3047dd1ac26c0a3eb"
+    },
+    {
+      "path": "src/agent_harness/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tests/test_model_boundary.py",
+      "sha256": "b33362f32738d17d56f59516ad464edb2901df5a773d4250130b7d2e77a633ff"
+    },
+    {
+      "path": "tests/test_openai_compatible.py",
+      "sha256": "47d1b235631de29c25a04115a7cc633e60c043c974c589854c7baf4bf019e117"
+    },
+    {
+      "path": "tests/test_real_endpoint_smoke.py",
+      "sha256": "98a689941c12ba38f0c3fe3ab0b88af8645370274a2b89ec033658c8dafa4937"
+    }
+  ],
+  "schema_version": 1,
+  "source_notebook": "notebooks/01_model_boundary.ipynb",
+  "source_sha256": "2e6b6694fc1cbe7c6e26236166861992004cbaa723862f01a5247897d12c85ac"
+}

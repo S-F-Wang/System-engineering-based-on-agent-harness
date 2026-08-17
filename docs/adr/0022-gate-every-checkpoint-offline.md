@@ -1,0 +1,3 @@
+# Gate every Checkpoint offline
+
+A Checkpoint Package is publishable only after its Chapter Notebook passes structural export validation and `Restart Kernel -> Run All` in a clean environment, and the generated package compiles, installs, imports, and passes both chapter-local and cumulative regression tests. Notebooks and ordinary CI use a deterministic ScriptedModelAdapter, so the course remains reproducible without credentials or network access. The final `src/agent_harness` output must match the last Checkpoint's generated package. A real OpenAI-compatible smoke test is opt-in and credential-gated; it supplements but never replaces the offline Checkpoint Gate.
