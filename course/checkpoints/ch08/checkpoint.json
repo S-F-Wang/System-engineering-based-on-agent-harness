@@ -1,0 +1,132 @@
+{
+  "digest": "8cf8268fbb9f242d86220d0fcbb679e3d24e6f2bf69762b5e5e0b1dd7d3e853d",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "13b71fcc374927f8d3ee7f5618b8a0ef8f1060299792660351bea6049615a15f"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "a60ff1ea2f1a8ed6402cd3431ef417e6c6d1ae01a05f97038f2a1b622f1ebf8e"
+    },
+    {
+      "path": "src/agent_harness/__init__.py",
+      "sha256": "904e4225904a3931d4f712f12afaf97595b09c6f8e9a5400f2047f36fdd77e36"
+    },
+    {
+      "path": "src/agent_harness/coding.py",
+      "sha256": "3a1c54bdb0dd1dd77df4eb391e5df3f00b88f908524396b3011bcf1dbf9818a1"
+    },
+    {
+      "path": "src/agent_harness/compaction.py",
+      "sha256": "78d166cf1cbe7cec9bb4c9cebc6571d2b3de78e66ef36de25ec84c28bb3c8bc6"
+    },
+    {
+      "path": "src/agent_harness/extensions.py",
+      "sha256": "75cdefec8f9ad5af28482337addade6edda37af8ca5beb9e6a4c4c13c2063ea8"
+    },
+    {
+      "path": "src/agent_harness/model.py",
+      "sha256": "d241dc41bda3dea37c53a569bd2c34efa8f53cc68256d3243f2a34c22fa0b54c"
+    },
+    {
+      "path": "src/agent_harness/persistence.py",
+      "sha256": "b7adb3e1db10385c11ca5dcefa66aa3adb759b89d46e62e6d175c54c7223aae3"
+    },
+    {
+      "path": "src/agent_harness/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/agent_harness/resources.py",
+      "sha256": "2b56a900c444fe38befb33685a5737e8006ef1b7fafe51d64751f23b80c42749"
+    },
+    {
+      "path": "src/agent_harness/runtime.py",
+      "sha256": "9dc06d711245794ad8d7042fde2e98a8978941e0272a13cec4b7453a15f39545"
+    },
+    {
+      "path": "src/agent_harness/session.py",
+      "sha256": "fa08ad74c1870e613d5929069dc9dff14696739602bb0c27f9753a72e02ce6b4"
+    },
+    {
+      "path": "src/agent_harness/tools.py",
+      "sha256": "0874f1834897d0fad2ab972bfcae14794fba21e50c1643d7c898bb7d7e2b3dd8"
+    },
+    {
+      "path": "tests/test_chapter_04_contract.py",
+      "sha256": "2985fc04b09445a48a12c293ceb35353adfc409a0ec84d34baccf08e821ff5ce"
+    },
+    {
+      "path": "tests/test_chapter_05_contract.py",
+      "sha256": "af85c436ca474c315647d9e7e5f56bb4c1c93df27e41273310f9cf291082f8f3"
+    },
+    {
+      "path": "tests/test_chapter_06_contract.py",
+      "sha256": "18b81dca33921f83b4b9fccdc0f955b915ceb44c566dee84cbbab83f31908503"
+    },
+    {
+      "path": "tests/test_chapter_07_contract.py",
+      "sha256": "363cb85e70f2bc9460278433838396872ef7d0056d46a048e37583be91167725"
+    },
+    {
+      "path": "tests/test_chapter_08_contract.py",
+      "sha256": "df64285721382b3a93272559670dc80817e3d8ae9a6123dab7406047c0de50a6"
+    },
+    {
+      "path": "tests/test_coding_agent.py",
+      "sha256": "5205b40221af579641269c31493c4bab91b3b5b508c1e8b0e448cae388477dd0"
+    },
+    {
+      "path": "tests/test_coding_tools.py",
+      "sha256": "93c8ee0623d0feaced707804cb57728430faec06089a9fe3cd7535848c9968c7"
+    },
+    {
+      "path": "tests/test_compaction.py",
+      "sha256": "d43926e5d2747c053d72a36a7bf1a3436605cf51dc3cdb8b9625fa642f32ac58"
+    },
+    {
+      "path": "tests/test_durable_sessions.py",
+      "sha256": "27acae22924094800091f75e8182f6f13c774ee33078d171b4e06ee5438a67d4"
+    },
+    {
+      "path": "tests/test_extensions.py",
+      "sha256": "7ac8a4a5c95b86195ec65f35554c94ad5c39c4166df292af4d72e46a5e952377"
+    },
+    {
+      "path": "tests/test_model_boundary.py",
+      "sha256": "b33362f32738d17d56f59516ad464edb2901df5a773d4250130b7d2e77a633ff"
+    },
+    {
+      "path": "tests/test_openai_compatible.py",
+      "sha256": "c14acbcc74039cc36fa28e93a3769a9f1cd872109c40c8c430040259898c4efb"
+    },
+    {
+      "path": "tests/test_openai_tools.py",
+      "sha256": "2e40e6da60778f3617300a97e2527c9582c93ecee0905093349d14e6cbd7a904"
+    },
+    {
+      "path": "tests/test_real_endpoint_smoke.py",
+      "sha256": "98a689941c12ba38f0c3fe3ab0b88af8645370274a2b89ec033658c8dafa4937"
+    },
+    {
+      "path": "tests/test_resources.py",
+      "sha256": "0906266edbc21e33d77dd8fc2704f4c62b1f7d7caf60fe879a4466d8203c2508"
+    },
+    {
+      "path": "tests/test_run_control.py",
+      "sha256": "998376df42b7df10244e402cc724bd67bf2d3c7f1765cdf45191033439a0bc07"
+    },
+    {
+      "path": "tests/test_runtime.py",
+      "sha256": "b36d896a1e42a45518e2bf10fe1067f91a8da5fd99a36fa4e93c404bdb067c87"
+    },
+    {
+      "path": "tests/test_tools.py",
+      "sha256": "af2270c5f1f7cefc48fcfa723c4b7a4cf0a9675fc0120e7b99aac55efc460c61"
+    }
+  ],
+  "schema_version": 1,
+  "source_notebook": "notebooks/08_coding_agent.ipynb",
+  "source_sha256": "449daa58cb2fb734935bd5bf6b0eed2cc244f5252c2bdf2eae03580a1e6732b9"
+}
