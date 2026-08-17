@@ -47,5 +47,9 @@ def test_chapter_08_bash_demo_uses_a_subprocess_capable_worker_loop() -> None:
     )
 
     assert "def run_bash_demo():" in minimal_execution
+    assert (
+        "asyncio.WindowsProactorEventLoopPolicy().new_event_loop()"
+        in minimal_execution
+    )
     assert "asyncio.run(preset.tool('bash').execute" in minimal_execution
     assert "await asyncio.to_thread(run_bash_demo)" in minimal_execution

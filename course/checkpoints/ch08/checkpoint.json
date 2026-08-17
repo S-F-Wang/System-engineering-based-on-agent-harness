@@ -1,5 +1,5 @@
 {
-  "digest": "607d9137c76af91e3eefdfd4bbd68279800cf6c7dab938b8a6d9345f3e051d6d",
+  "digest": "0ab1504002c377846ef06870413e4977876afc68d6de1a279f7e94c313418cac",
   "files": [
     {
       "path": "README.md",
@@ -128,5 +128,5 @@
   ],
   "schema_version": 1,
   "source_notebook": "notebooks/08_coding_agent.ipynb",
-  "source_sha256": "70f347a481b5559b633122cc23cca83de76d505956e2a25bd847a3ae174a402e"
+  "source_sha256": "45f4f2ff131ca5903a1022e529ed8bdbefaa2d6aab5957d694b1a7948389c587"
 }
