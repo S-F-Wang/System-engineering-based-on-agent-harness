@@ -349,6 +349,19 @@ def _verify_checkpoint(staging: Path) -> tuple[str, ...]:
         return _verify_candidate(candidate)
 
 
+def verify_checkpoint_package(checkpoint: str | Path) -> tuple[str, ...]:
+    """Verify a published Checkpoint copy without modifying the source tree."""
+
+    checkpoint_path = Path(checkpoint).resolve()
+    if not checkpoint_path.is_dir():
+        raise ValueError(f"Checkpoint does not exist: {checkpoint_path}")
+    if not (checkpoint_path / "checkpoint.json").is_file():
+        raise CheckpointVerificationError(
+            "manifest", "checkpoint.json is missing"
+        )
+    return _verify_checkpoint(checkpoint_path)
+
+
 def export_checkpoint(
     notebook: str | Path,
     destination: str | Path,

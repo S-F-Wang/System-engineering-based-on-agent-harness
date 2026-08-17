@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 from pathlib import Path
 import re
+import tempfile
 from typing import Any
 
 from nbclient import NotebookClient
@@ -21,6 +23,62 @@ REQUIRED_SECTIONS = (
     "Checkpoint Export and Verification",
     "Public API Summary",
 )
+
+_OFFLINE_SITECUSTOMIZE = '''\
+"""Injected by the course Release Gate to keep notebook kernels offline."""
+
+import ipaddress
+import socket
+
+
+class OfflineNetworkError(OSError):
+    pass
+
+
+def _is_local(host):
+    if host is None:
+        return True
+    if isinstance(host, bytes):
+        host = host.decode("ascii", errors="ignore")
+    if not isinstance(host, str):
+        return False
+    if host.lower().rstrip(".") == "localhost":
+        return True
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+_original_getaddrinfo = socket.getaddrinfo
+_original_connect = socket.socket.connect
+_original_connect_ex = socket.socket.connect_ex
+
+
+def _offline_getaddrinfo(host, *args, **kwargs):
+    if not _is_local(host):
+        raise OfflineNetworkError(f"offline Release Gate blocked host: {host}")
+    return _original_getaddrinfo(host, *args, **kwargs)
+
+
+def _offline_connect(instance, address):
+    if isinstance(address, tuple) and not _is_local(address[0]):
+        raise OfflineNetworkError(f"offline Release Gate blocked host: {address[0]}")
+    return _original_connect(instance, address)
+
+
+def _offline_connect_ex(instance, address):
+    if isinstance(address, tuple) and not _is_local(address[0]):
+        raise OfflineNetworkError(f"offline Release Gate blocked host: {address[0]}")
+    return _original_connect_ex(instance, address)
+
+
+socket.getaddrinfo = _offline_getaddrinfo
+socket.socket.connect = _offline_connect
+socket.socket.connect_ex = _offline_connect_ex
+'''
+
+_CREDENTIAL_MARKERS = ("API_KEY", "CREDENTIAL", "PASSWORD", "SECRET", "TOKEN")
 
 
 @dataclass(frozen=True, slots=True)
@@ -80,8 +138,13 @@ def execute_notebook(
     *,
     cwd: str | Path,
     timeout: int = 300,
+    offline: bool = True,
 ) -> Any:
-    """Execute a Chapter Notebook in a new kernel and return the in-memory copy."""
+    """Execute a Chapter Notebook in a fresh, credential-free kernel.
+
+    Offline execution permits only loopback sockets so Jupyter kernel transport
+    and deterministic local provider fakes continue to work.
+    """
 
     notebook = nbformat.read(Path(path), as_version=4)
     client = NotebookClient(
@@ -90,4 +153,22 @@ def execute_notebook(
         kernel_name="python3",
         allow_errors=False,
     )
-    return client.execute(cwd=str(Path(cwd).resolve()))
+    environment = dict(os.environ)
+    for name in tuple(environment):
+        if any(marker in name.upper() for marker in _CREDENTIAL_MARKERS):
+            environment.pop(name)
+    environment.pop("AGENT_HARNESS_REAL_SMOKE", None)
+    if not offline:
+        return client.execute(cwd=str(Path(cwd).resolve()), env=environment)
+
+    with tempfile.TemporaryDirectory(prefix="notebook-offline-") as temporary:
+        hook_root = Path(temporary)
+        (hook_root / "sitecustomize.py").write_text(
+            _OFFLINE_SITECUSTOMIZE,
+            encoding="utf-8",
+        )
+        previous_pythonpath = environment.get("PYTHONPATH")
+        environment["PYTHONPATH"] = os.pathsep.join(
+            item for item in (str(hook_root), previous_pythonpath) if item
+        )
+        return client.execute(cwd=str(Path(cwd).resolve()), env=environment)

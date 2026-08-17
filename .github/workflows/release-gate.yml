@@ -1,0 +1,73 @@
+name: Version one release gate
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  offline-release-gate:
+    name: Python 3.11 / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Check out the authoritative source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.11"
+          check-latest: false
+
+      - name: Set up locked uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: "0.11.24"
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Materialize the locked authoring environment
+        run: uv sync --locked --python 3.11
+
+      - name: Verify release tooling
+        env: &offline
+          UV_OFFLINE: "1"
+          PIP_NO_INDEX: "1"
+          AGENT_HARNESS_REAL_SMOKE: "0"
+          OPENAI_API_KEY: ""
+        run: >-
+          uv run --frozen python -m pytest -q
+          tests/test_checkpoint_export.py tests/test_release_gate.py
+
+      - name: Run the complete offline release gate
+        env: *offline
+        run: uv run --frozen python -m course.tools.release
+
+      - name: Type-check course tooling and generated production package
+        env: *offline
+        run: uv run --frozen mypy src/agent_harness course/tools
+
+      - name: Build and install the production distribution offline
+        env: *offline
+        run: |
+          uv build --offline
+          uv run --no-sync python -m pip install --no-deps --no-build-isolation --force-reinstall .
+          uv run --no-sync python -c "import agent_harness; print(agent_harness.__name__)"

@@ -24,11 +24,20 @@ Generated Checkpoint files are not edited by hand. The older notebooks under `no
 
 ```bash
 uv sync --python 3.11
-uv run python -m pytest
-PYTHONPATH=course/checkpoints/ch09/src \
-  uv run python -m pytest -p no:cacheprovider course/checkpoints/ch09/tests
+uv run python -m pytest -q tests/test_checkpoint_export.py tests/test_release_gate.py
+PIP_NO_INDEX=1 AGENT_HARNESS_REAL_SMOKE=0 \
+  uv run python -m course.tools.release
 uv run mypy src/agent_harness course/tools
 ```
+
+The release command validates the one authoritative artifact chain, executes all
+nine Chapter Notebooks in fresh credential-free kernels with external network
+access blocked, verifies every cumulative Checkpoint without republishing it,
+and regenerates the production package twice. The same command is the required
+Python 3.11 matrix job on Linux, Windows, and macOS in
+[`release-gate.yml`](.github/workflows/release-gate.yml). See the
+[`version-one verification report`](docs/release/v1-verification.md) for exact
+evidence, platform status, and known limitations.
 
 The ordinary suite uses `ScriptedModelAdapter` and a loopback fake OpenAI-compatible Chat Completions endpoint. A real endpoint is supplementary and opt-in; see the generated Checkpoint README for its explicit credential gate.
 
