@@ -7,6 +7,7 @@ import pytest
 
 from course.tools.checkpoint import (
     CheckpointVerificationError,
+    checkpoint_drift,
     export_checkpoint,
     export_production_package,
     production_drift,
@@ -218,6 +219,44 @@ def test_repeated_export_has_a_deterministic_source_manifest(tmp_path: Path) -> 
     assert manifest["source_notebook"] == "notebooks/01.ipynb"
     assert str(tmp_path) not in first_manifest.decode()
     assert manifest["files"][0]["path"] == "src/example/__init__.py"
+
+
+def test_checkpoint_export_pins_lf_bytes_on_windows(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    course = tmp_path / "course"
+    notebook = course / "notebooks" / "01.ipynb"
+    destination = course / "checkpoints" / "ch01"
+    _write_notebook(
+        notebook,
+        [_export_cell("src/example/__init__.py", "VALUE = 1\n")],
+    )
+    platform_write_text = Path.write_text
+
+    def windows_write_text(
+        path: Path,
+        data: str,
+        encoding: str | None = None,
+        errors: str | None = None,
+        newline: str | None = None,
+    ) -> int:
+        if newline is None:
+            data = data.replace("\n", "\r\n")
+        return platform_write_text(
+            path,
+            data,
+            encoding=encoding,
+            errors=errors,
+            newline="",
+        )
+
+    monkeypatch.setattr(Path, "write_text", windows_write_text)
+
+    export_checkpoint(notebook, destination, verify=False)
+
+    assert (destination / "src/example/__init__.py").read_bytes() == b"VALUE = 1\n"
+    assert b"\r\n" not in (destination / "checkpoint.json").read_bytes()
+    assert checkpoint_drift(notebook, destination) == ()
 
 
 def test_cumulative_export_carries_forward_and_replaces_checkpoint_files(

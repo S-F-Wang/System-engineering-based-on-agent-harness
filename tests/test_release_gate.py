@@ -43,6 +43,9 @@ def test_release_ci_runs_one_offline_python_311_gate_on_all_supported_platforms(
     assert "AGENT_HARNESS_REAL_SMOKE: \"0\"" in workflow
     assert "python -m course.tools.release" in workflow
 
+    attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+    assert "* text=auto eol=lf" in attributes
+
 
 def test_release_inspection_locks_the_single_course_spine_and_v1_scope() -> None:
     inspection = inspect_release(ROOT)

@@ -167,7 +167,7 @@ def _assemble_checkpoint(
     for relative, source in exports.items():
         target = staging.joinpath(*PurePosixPath(relative).parts)
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(source, encoding="utf-8")
+        target.write_text(source, encoding="utf-8", newline="\n")
     return _checkpoint_files(staging)
 
 
@@ -226,6 +226,7 @@ def _write_manifest(
     (staging / "checkpoint.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
     return digest
 
