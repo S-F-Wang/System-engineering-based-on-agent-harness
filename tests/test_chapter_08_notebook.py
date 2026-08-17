@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import nbformat
+
 from course.tools.checkpoint import checkpoint_drift
 from course.tools.notebook import execute_notebook, validate_chapter_notebook
 
@@ -36,3 +38,14 @@ def test_chapter_08_is_structured_and_runs_in_a_clean_kernel() -> None:
 
 def test_chapter_08_checkpoint_has_no_export_drift() -> None:
     assert checkpoint_drift(CHAPTER, CHECKPOINT) == ()
+
+
+def test_chapter_08_bash_demo_uses_a_subprocess_capable_worker_loop() -> None:
+    notebook = nbformat.read(CHAPTER, as_version=4)
+    minimal_execution = next(
+        cell.source for cell in notebook.cells if cell.get("id") == "ch08-009"
+    )
+
+    assert "def run_bash_demo():" in minimal_execution
+    assert "asyncio.run(preset.tool('bash').execute" in minimal_execution
+    assert "await asyncio.to_thread(run_bash_demo)" in minimal_execution
