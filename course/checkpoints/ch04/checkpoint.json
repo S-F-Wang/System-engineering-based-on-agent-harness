@@ -1,0 +1,72 @@
+{
+  "digest": "4d14ef094f7ddf5a3cfba19b89fc9b9187e2e32d27ba0768bb5cb47b11f04f75",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "32520daa7f20eb12deee5eade3f8b69cdb9834e8b7fe7ae209a1f86d221d77e8"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "3ea36821c1ed81f3560fbbd0f7ed6cb87e9dd5a895fc4ad8d29d01f0a0c66bec"
+    },
+    {
+      "path": "src/agent_harness/__init__.py",
+      "sha256": "139674e89e69bc15ceba5805d5ac04de9c3e5c6098aae32aafa33472a7246f39"
+    },
+    {
+      "path": "src/agent_harness/model.py",
+      "sha256": "349abed0395812b797509892d96ce7af72a313b84d8e85efc525d265e2fb08a4"
+    },
+    {
+      "path": "src/agent_harness/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/agent_harness/runtime.py",
+      "sha256": "d08d411c4918be2cfdfacc619d9c434e7a9660e2241f4c1f5d1d1f7c4c226dc3"
+    },
+    {
+      "path": "src/agent_harness/session.py",
+      "sha256": "f30c9dc9b9e5e2a0d6f41ea0208eb02099801135d3150c93aaed86c50dd05910"
+    },
+    {
+      "path": "src/agent_harness/tools.py",
+      "sha256": "bfa62c90e2f0b4767c45e075b8bf6d0bdfa3e48eb16db60ffa6c4841eb0d98e0"
+    },
+    {
+      "path": "tests/test_chapter_04_contract.py",
+      "sha256": "2985fc04b09445a48a12c293ceb35353adfc409a0ec84d34baccf08e821ff5ce"
+    },
+    {
+      "path": "tests/test_model_boundary.py",
+      "sha256": "b33362f32738d17d56f59516ad464edb2901df5a773d4250130b7d2e77a633ff"
+    },
+    {
+      "path": "tests/test_openai_compatible.py",
+      "sha256": "11e3768f45eac2d287f9934edba50ec3594d9b6c1c2d879d81ea6eb84bf56032"
+    },
+    {
+      "path": "tests/test_openai_tools.py",
+      "sha256": "2e40e6da60778f3617300a97e2527c9582c93ecee0905093349d14e6cbd7a904"
+    },
+    {
+      "path": "tests/test_real_endpoint_smoke.py",
+      "sha256": "98a689941c12ba38f0c3fe3ab0b88af8645370274a2b89ec033658c8dafa4937"
+    },
+    {
+      "path": "tests/test_run_control.py",
+      "sha256": "998376df42b7df10244e402cc724bd67bf2d3c7f1765cdf45191033439a0bc07"
+    },
+    {
+      "path": "tests/test_runtime.py",
+      "sha256": "b36d896a1e42a45518e2bf10fe1067f91a8da5fd99a36fa4e93c404bdb067c87"
+    },
+    {
+      "path": "tests/test_tools.py",
+      "sha256": "af2270c5f1f7cefc48fcfa723c4b7a4cf0a9675fc0120e7b99aac55efc460c61"
+    }
+  ],
+  "schema_version": 1,
+  "source_notebook": "notebooks/04_run_control.ipynb",
+  "source_sha256": "8354addb3dd7d0a357ea1913a18c49c4a0d12ee9c9be6ad2c75fe6be1ff68748"
+}
