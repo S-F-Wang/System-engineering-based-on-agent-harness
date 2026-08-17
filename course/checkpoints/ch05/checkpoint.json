@@ -1,0 +1,84 @@
+{
+  "digest": "004a2871a77f4569067f80d0750ef661c36e769614a5c36ec4cdad1f2ed9331c",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "852d52887fed104a8b5c1be6cb21ab64cec05899294b85cf232303d3566a0d85"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "2875a96be084695dfbee4d94fc4cb6d3bd084a429ec25de16df214bdb8e8c084"
+    },
+    {
+      "path": "src/agent_harness/__init__.py",
+      "sha256": "abdb70fb5ac154a28d3c090a597d08fc8b6716f66104f8dbad95f7b698777ac8"
+    },
+    {
+      "path": "src/agent_harness/model.py",
+      "sha256": "349abed0395812b797509892d96ce7af72a313b84d8e85efc525d265e2fb08a4"
+    },
+    {
+      "path": "src/agent_harness/persistence.py",
+      "sha256": "d0b50dd26096f9d7c9ca554b644e95e7bb44dd26bc7d61b235bda119b8008112"
+    },
+    {
+      "path": "src/agent_harness/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/agent_harness/runtime.py",
+      "sha256": "3f85a849692a105b690236bcd99309b14ab8cd5fae5c827ddd8891b2ee300447"
+    },
+    {
+      "path": "src/agent_harness/session.py",
+      "sha256": "aed0caa5f4f7a972f15ba38eb36fe0a69cd4ae1df7dfef335c79fc52cfde8973"
+    },
+    {
+      "path": "src/agent_harness/tools.py",
+      "sha256": "bfa62c90e2f0b4767c45e075b8bf6d0bdfa3e48eb16db60ffa6c4841eb0d98e0"
+    },
+    {
+      "path": "tests/test_chapter_04_contract.py",
+      "sha256": "2985fc04b09445a48a12c293ceb35353adfc409a0ec84d34baccf08e821ff5ce"
+    },
+    {
+      "path": "tests/test_chapter_05_contract.py",
+      "sha256": "af85c436ca474c315647d9e7e5f56bb4c1c93df27e41273310f9cf291082f8f3"
+    },
+    {
+      "path": "tests/test_durable_sessions.py",
+      "sha256": "27acae22924094800091f75e8182f6f13c774ee33078d171b4e06ee5438a67d4"
+    },
+    {
+      "path": "tests/test_model_boundary.py",
+      "sha256": "b33362f32738d17d56f59516ad464edb2901df5a773d4250130b7d2e77a633ff"
+    },
+    {
+      "path": "tests/test_openai_compatible.py",
+      "sha256": "11e3768f45eac2d287f9934edba50ec3594d9b6c1c2d879d81ea6eb84bf56032"
+    },
+    {
+      "path": "tests/test_openai_tools.py",
+      "sha256": "2e40e6da60778f3617300a97e2527c9582c93ecee0905093349d14e6cbd7a904"
+    },
+    {
+      "path": "tests/test_real_endpoint_smoke.py",
+      "sha256": "98a689941c12ba38f0c3fe3ab0b88af8645370274a2b89ec033658c8dafa4937"
+    },
+    {
+      "path": "tests/test_run_control.py",
+      "sha256": "998376df42b7df10244e402cc724bd67bf2d3c7f1765cdf45191033439a0bc07"
+    },
+    {
+      "path": "tests/test_runtime.py",
+      "sha256": "b36d896a1e42a45518e2bf10fe1067f91a8da5fd99a36fa4e93c404bdb067c87"
+    },
+    {
+      "path": "tests/test_tools.py",
+      "sha256": "af2270c5f1f7cefc48fcfa723c4b7a4cf0a9675fc0120e7b99aac55efc460c61"
+    }
+  ],
+  "schema_version": 1,
+  "source_notebook": "notebooks/05_durable_sessions.ipynb",
+  "source_sha256": "b94ccfc1917030d11bf383b18cd743c8e5c581a26ffeb23af406caa2aabc9628"
+}
