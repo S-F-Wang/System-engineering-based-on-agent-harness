@@ -8,20 +8,28 @@ import pytest
 from course.tools.checkpoint import CheckpointVerificationError, export_checkpoint
 
 
-def _write_notebook(path: Path, cells: list[dict[str, object]]) -> None:
+def _write_notebook(
+    path: Path,
+    cells: list[dict[str, object]],
+    *,
+    base_checkpoint: str | None = None,
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    metadata: dict[str, object] = {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3",
+        },
+        "language_info": {"name": "python", "version": "3.11"},
+    }
+    if base_checkpoint is not None:
+        metadata["agent_harness_base_checkpoint"] = base_checkpoint
     path.write_text(
         json.dumps(
             {
                 "cells": cells,
-                "metadata": {
-                    "kernelspec": {
-                        "display_name": "Python 3",
-                        "language": "python",
-                        "name": "python3",
-                    },
-                    "language_info": {"name": "python", "version": "3.11"},
-                },
+                "metadata": metadata,
                 "nbformat": 4,
                 "nbformat_minor": 5,
             }
@@ -205,6 +213,47 @@ def test_repeated_export_has_a_deterministic_source_manifest(tmp_path: Path) -> 
     assert manifest["source_notebook"] == "notebooks/01.ipynb"
     assert str(tmp_path) not in first_manifest.decode()
     assert manifest["files"][0]["path"] == "src/example/__init__.py"
+
+
+def test_cumulative_export_carries_forward_and_replaces_checkpoint_files(
+    tmp_path: Path,
+) -> None:
+    course = tmp_path / "course"
+    base = course / "checkpoints" / "ch01"
+    base_module = base / "src" / "example" / "__init__.py"
+    base_module.parent.mkdir(parents=True)
+    base_module.write_text('VALUE = "chapter one"\n', encoding="utf-8")
+    base_test = base / "tests" / "test_prior.py"
+    base_test.parent.mkdir(parents=True)
+    base_test.write_text("def test_prior(): assert True\n", encoding="utf-8")
+    (base / "checkpoint.json").write_text('{"old": true}\n', encoding="utf-8")
+
+    notebook = course / "notebooks" / "02.ipynb"
+    destination = course / "checkpoints" / "ch02"
+    _write_notebook(
+        notebook,
+        [
+            _export_cell(
+                "src/example/__init__.py", 'VALUE = "chapter two"\n'
+            ),
+            _export_cell("src/example/runtime.py", "ASYNC_FIRST = True\n"),
+        ],
+        base_checkpoint="ch01",
+    )
+
+    result = export_checkpoint(notebook, destination, verify=False)
+
+    assert (destination / "src" / "example" / "__init__.py").read_text() == (
+        'VALUE = "chapter two"\n'
+    )
+    assert (destination / "tests" / "test_prior.py").is_file()
+    assert result.files == (
+        "src/example/__init__.py",
+        "src/example/runtime.py",
+        "tests/test_prior.py",
+    )
+    manifest = json.loads((destination / "checkpoint.json").read_text())
+    assert [item["path"] for item in manifest["files"]] == list(result.files)
 
 
 def test_failed_import_preserves_published_checkpoint(tmp_path: Path) -> None:

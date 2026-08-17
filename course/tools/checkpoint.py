@@ -111,6 +111,66 @@ def _collect_exports(notebook: Path) -> dict[str, str]:
     return {path: "\n".join(parts) for path, parts in exports.items()}
 
 
+def _base_checkpoint(notebook: Path) -> Path | None:
+    document = json.loads(notebook.read_text(encoding="utf-8"))
+    metadata = document.get("metadata", {})
+    if not isinstance(metadata, dict):
+        raise ValueError("notebook metadata must be an object")
+    marker = metadata.get("agent_harness_base_checkpoint")
+    if marker is None:
+        return None
+    if not isinstance(marker, str) or not marker:
+        raise ValueError("base Checkpoint must be a non-empty directory name")
+    relative = _safe_relative_path(marker)
+    if len(relative.parts) != 1:
+        raise ValueError("base Checkpoint must name one sibling directory")
+    checkpoints = notebook.parent.parent / "checkpoints"
+    base = (checkpoints / marker).resolve()
+    try:
+        base.relative_to(checkpoints.resolve())
+    except ValueError as error:
+        raise ValueError("base Checkpoint escapes course/checkpoints") from error
+    if not base.is_dir():
+        raise ValueError(f"base Checkpoint does not exist: {marker!r}")
+    return base
+
+
+def _checkpoint_files(root: Path) -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            path.relative_to(root).as_posix()
+            for path in root.rglob("*")
+            if path.is_file()
+            and path.name != "checkpoint.json"
+            and "__pycache__" not in path.parts
+            and ".pytest_cache" not in path.parts
+            and path.suffix != ".pyc"
+        )
+    )
+
+
+def _assemble_checkpoint(
+    notebook: Path,
+    staging: Path,
+    exports: dict[str, str],
+) -> tuple[str, ...]:
+    base = _base_checkpoint(notebook)
+    if base is not None:
+        shutil.copytree(
+            base,
+            staging,
+            dirs_exist_ok=True,
+            ignore=shutil.ignore_patterns(
+                "checkpoint.json", "__pycache__", ".pytest_cache", "*.pyc"
+            ),
+        )
+    for relative, source in exports.items():
+        target = staging.joinpath(*PurePosixPath(relative).parts)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(source, encoding="utf-8")
+    return _checkpoint_files(staging)
+
+
 def _sha256(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
@@ -318,10 +378,7 @@ def export_checkpoint(
         prefix=f".{destination_path.name}-", dir=destination_path.parent
     ) as temporary:
         staging = Path(temporary) / destination_path.name
-        for relative, source in exports.items():
-            target = staging.joinpath(*PurePosixPath(relative).parts)
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(source, encoding="utf-8")
+        exported_files = _assemble_checkpoint(notebook_path, staging, exports)
 
         digest = _write_manifest(
             staging,
@@ -357,13 +414,9 @@ def checkpoint_drift(
         raise ValueError("a Checkpoint must be inside course/checkpoints") from error
 
     exports = _collect_exports(notebook_path)
-    exported_files = tuple(sorted(exports))
     with tempfile.TemporaryDirectory(prefix="checkpoint-drift-") as temporary:
         expected_root = Path(temporary)
-        for relative, source in exports.items():
-            target = expected_root.joinpath(*PurePosixPath(relative).parts)
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_text(source, encoding="utf-8")
+        exported_files = _assemble_checkpoint(notebook_path, expected_root, exports)
         _write_manifest(
             expected_root,
             course_root=course_root,
