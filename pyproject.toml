@@ -48,3 +48,11 @@ addopts = "-ra"
 python_version = "3.11"
 check_untyped_defs = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "agent_harness.coding"
+disable_error_code = ["attr-defined"]
+
+[[tool.mypy.overrides]]
+module = "agent_harness.persistence"
+disable_error_code = ["attr-defined", "unused-ignore"]

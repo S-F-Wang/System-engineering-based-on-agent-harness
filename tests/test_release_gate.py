@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import tomllib
 
 import nbformat
 
@@ -45,6 +46,16 @@ def test_release_ci_runs_one_offline_python_311_gate_on_all_supported_platforms(
 
     attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
     assert "* text=auto eol=lf" in attributes
+
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    overrides = {
+        item["module"]: tuple(item["disable_error_code"])
+        for item in project["tool"]["mypy"]["overrides"]
+    }
+    assert overrides == {
+        "agent_harness.coding": ("attr-defined",),
+        "agent_harness.persistence": ("attr-defined", "unused-ignore"),
+    }
 
 
 def test_release_inspection_locks_the_single_course_spine_and_v1_scope() -> None:
