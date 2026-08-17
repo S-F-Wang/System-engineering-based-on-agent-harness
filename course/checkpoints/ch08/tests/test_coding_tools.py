@@ -204,3 +204,32 @@ def test_replaceable_bash_backend_must_keep_the_preset_fixed_workspace(
             workspace,
             bash_operations=BashOperations(other),
         )
+
+def test_bash_uses_fixed_workspace_and_filters_sensitive_environment(
+    tmp_path: Path,
+) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    operations = BashOperations(
+        workspace,
+        environment={
+            "PATH": os.environ["PATH"],
+            "SAFE_VALUE": "visible",
+            "API_KEY": "hidden",
+            "AWS_ACCESS_KEY_ID": "also-hidden",
+            "ALLOWED_TOKEN": "deliberate",
+        },
+        allow_sensitive=["ALLOWED_TOKEN"],
+    )
+
+    result = asyncio.run(
+        operations.run(
+            "printf '%s|%s|%s|%s' \"$SAFE_VALUE\" "
+            "\"${API_KEY-unset}\" \"${AWS_ACCESS_KEY_ID-unset}\" "
+            "\"$ALLOWED_TOKEN\"; printf 'fixed' > cwd-marker.txt"
+        )
+    )
+
+    assert result.stdout == "visible|unset|unset|deliberate"
+    assert (workspace / "cwd-marker.txt").read_text(encoding="utf-8") == "fixed"
+    assert result.returncode == 0

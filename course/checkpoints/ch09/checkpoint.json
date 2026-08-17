@@ -1,5 +1,5 @@
 {
-  "digest": "daf84eac8b6527995c3fba7af7fef87ae6f3b80fe82f5047acb43b761e78528d",
+  "digest": "8702bdc26e24e5d9fc23c7722cc640d018c0d7794da19ceab182b49212e14d09",
   "files": [
     {
       "path": "README.md",
@@ -103,7 +103,7 @@
     },
     {
       "path": "tests/test_coding_tools.py",
-      "sha256": "93c8ee0623d0feaced707804cb57728430faec06089a9fe3cd7535848c9968c7"
+      "sha256": "d107c4f7fbc3bc5915ce835321b91c2db588b53eae448b929a3a2cf6ad72145c"
     },
     {
       "path": "tests/test_compaction.py",
@@ -147,7 +147,7 @@
     },
     {
       "path": "tests/test_resources.py",
-      "sha256": "0906266edbc21e33d77dd8fc2704f4c62b1f7d7caf60fe879a4466d8203c2508"
+      "sha256": "81ce575e6faf36a82f699734152513a096c7b7dceff7896ba254b675dfbb8f6d"
     },
     {
       "path": "tests/test_run_control.py",

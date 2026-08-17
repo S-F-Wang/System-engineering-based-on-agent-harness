@@ -53,3 +53,16 @@ def test_chapter_08_bash_demo_uses_a_subprocess_capable_worker_loop() -> None:
     )
     assert "asyncio.run(preset.tool('bash').execute" in minimal_execution
     assert "await asyncio.to_thread(run_bash_demo)" in minimal_execution
+
+
+def test_chapter_08_tests_use_cross_platform_semantic_assertions() -> None:
+    notebook = nbformat.read(CHAPTER, as_version=4)
+    exported_tests = "\n".join(
+        cell.source
+        for cell in notebook.cells
+        if cell.get("metadata", {}).get("agent_harness_export", {}).get("path")
+        in {"tests/test_coding_tools.py", "tests/test_resources.py"}
+    )
+
+    assert "cwd-marker.txt" in exported_tests
+    assert "json.loads(trust_file.read_text" in exported_tests

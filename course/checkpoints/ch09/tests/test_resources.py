@@ -278,3 +278,20 @@ def test_local_resource_discovery_rejects_scoped_symlink_escape(
             workspace,
             trust=MemoryProjectTrust([workspace]),
         ).load()
+
+def test_project_trust_is_persisted_against_the_canonical_workspace_path(
+    tmp_path: Path,
+) -> None:
+    import json
+
+    workspace = tmp_path / "project"
+    workspace.mkdir()
+    trust_file = tmp_path / "omega-data" / "trusted-projects.json"
+    store = JSONProjectTrustStore(trust_file)
+
+    store.approve(workspace / ".." / "project")
+
+    reloaded = JSONProjectTrustStore(trust_file)
+    payload = json.loads(trust_file.read_text(encoding="utf-8"))
+    assert reloaded.is_trusted(workspace.resolve()) is True
+    assert payload["trusted_paths"] == [str(workspace.resolve())]
