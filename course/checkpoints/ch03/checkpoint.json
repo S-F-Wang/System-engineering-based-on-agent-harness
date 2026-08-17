@@ -1,0 +1,60 @@
+{
+  "digest": "38d7965e6a07f521d0cb7c3d0f417f4370270907167b01ca72226c4f10068239",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c587b5d3d0b475170cf671dd6ced4dbdf488c6d447b2567cbc4bddb34fb7d2bf"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "7c6519afe1f2deb4b0994c3795c48e8bb8de5f94772a015689ff014830e1f054"
+    },
+    {
+      "path": "src/agent_harness/__init__.py",
+      "sha256": "d5aa7e114adc1a38aa864f519199318163cd295894373345d154444633190071"
+    },
+    {
+      "path": "src/agent_harness/model.py",
+      "sha256": "349abed0395812b797509892d96ce7af72a313b84d8e85efc525d265e2fb08a4"
+    },
+    {
+      "path": "src/agent_harness/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/agent_harness/runtime.py",
+      "sha256": "a8a4dd647d78cc135573e584244158fa3074fc24eec10ec73dd034d0783c895c"
+    },
+    {
+      "path": "src/agent_harness/tools.py",
+      "sha256": "7913ffde587d0718815f75c369d865f7fffb6ff789fa8a1e112ceb93576066b2"
+    },
+    {
+      "path": "tests/test_model_boundary.py",
+      "sha256": "b33362f32738d17d56f59516ad464edb2901df5a773d4250130b7d2e77a633ff"
+    },
+    {
+      "path": "tests/test_openai_compatible.py",
+      "sha256": "11e3768f45eac2d287f9934edba50ec3594d9b6c1c2d879d81ea6eb84bf56032"
+    },
+    {
+      "path": "tests/test_openai_tools.py",
+      "sha256": "2e40e6da60778f3617300a97e2527c9582c93ecee0905093349d14e6cbd7a904"
+    },
+    {
+      "path": "tests/test_real_endpoint_smoke.py",
+      "sha256": "98a689941c12ba38f0c3fe3ab0b88af8645370274a2b89ec033658c8dafa4937"
+    },
+    {
+      "path": "tests/test_runtime.py",
+      "sha256": "b36d896a1e42a45518e2bf10fe1067f91a8da5fd99a36fa4e93c404bdb067c87"
+    },
+    {
+      "path": "tests/test_tools.py",
+      "sha256": "af2270c5f1f7cefc48fcfa723c4b7a4cf0a9675fc0120e7b99aac55efc460c61"
+    }
+  ],
+  "schema_version": 1,
+  "source_notebook": "notebooks/03_structured_tools.ipynb",
+  "source_sha256": "42aaa70c4c7511f5414dde25fd129c8013890b24925521ff657a6f1142ad61df"
+}
